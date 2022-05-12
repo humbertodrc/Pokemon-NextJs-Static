@@ -1,22 +1,23 @@
 import {NextPage, GetStaticProps} from "next";
-import { pokeApi } from '../api';
+import {pokeApi} from "../api";
 import {Layout} from "../components/layouts";
-import { PokemonListResponse } from '../interfaces';
+import {PokemonListResponse, SmallPokemon} from "../interfaces";
 
-const HomePage: NextPage = (props) => {
+interface Props {
+	pokemons: SmallPokemon[];
+}
 
-	console.log('props', props);
-	
+const HomePage: NextPage<Props> = ({pokemons}) => {
+	// console.log("pokemons", pokemons[0].id);
+
 	return (
 		<Layout title="Listado de Pokemons">
 			<ul>
-				<li>Pokémom</li>
-				<li>Pokémom</li>
-				<li>Pokémom</li>
-				<li>Pokémom</li>
-				<li>Pokémom</li>
-				<li>Pokémom</li>
-				<li>Pokémom</li>
+				{pokemons.map(({id, name}) => (
+					<li key={id}>
+						{id} {name}
+					</li>
+				))}
 			</ul>
 		</Layout>
 	);
@@ -30,12 +31,20 @@ const HomePage: NextPage = (props) => {
 //- The page must be pre-rendered (for SEO) and be very fast — getStaticProps generates HTML and JSON files, both of which can be cached by a CDN for performance.
 // Esta funcion se ejecuta solo del lado del servidor y en Build time solo se puede usar en PAGES.
 export const getStaticProps: GetStaticProps = async () => {
-	
-	const {data} = await pokeApi.get<PokemonListResponse>('/pokemon?limit=151');
+	const {data} = await pokeApi.get<PokemonListResponse>("/pokemon?limit=151");
+
+	// Agregar el ID e Imagen al objeto Pokemon que se envia por el props
+	const pokemons = data.results.map((poke, index) => ({
+		...poke,
+		id: index + 1,
+		img: `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/dream-world/${
+			index + 1
+		}.svg`,
+	}));
 
 	return {
 		props: {
-			pokemons: data.results,
+			pokemons,
 		},
 	};
 };
