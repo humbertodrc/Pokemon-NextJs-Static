@@ -1,3 +1,4 @@
+import {useEffect} from "react";
 import {GetStaticProps, NextPage, GetStaticPaths} from "next";
 import {Button, Card, Container, Grid, Image, Text} from "@nextui-org/react";
 import {pokeApi} from "../../api";
@@ -11,8 +12,20 @@ interface Props {
 const PokemonPage: NextPage<Props> = ({pokemon}) => {
 	// console.log("pokemon", pokemon);
 
+	const onToggleFavorite = () => {
+		console.log("ID: " + pokemon.id);
+		localStorage.setItem("favorite", `${pokemon.id}`);
+	};
+
+	// Para saber que esta del lado del servidor o del cliente
+	// console.log({existe: typeof window})
+
+	useEffect(() => {
+		console.log("useEffect", localStorage.getItem("favorite"));
+	}, []);
+
 	return (
-		<Layout title={`${pokemon.name}`}>
+		<Layout title={pokemon.name}>
 			<Grid.Container css={{marginTop: "5px"}} gap={2}>
 				<Grid xs={12} sm={4}>
 					<Card hoverable css={{padding: "30px"}}>
@@ -37,7 +50,7 @@ const PokemonPage: NextPage<Props> = ({pokemon}) => {
 							<Text h1 transform="capitalize">
 								{pokemon.name}
 							</Text>
-							<Button color={"gradient"} ghost>
+							<Button onClick={onToggleFavorite} color={"gradient"} ghost>
 								Guardar en favoritos
 							</Button>
 						</Card.Header>
