@@ -1,3 +1,4 @@
+// Guardar y Remover de LocalStorage Favoritos
 const toggleFavorites = (id: number) => {
   
 	// console.log("toggleFavorites llamado");
@@ -18,7 +19,20 @@ const toggleFavorites = (id: number) => {
 	localStorage.setItem("favorites", JSON.stringify(favorites));
 };
 
+// Verificar si hay pokemons en Favoritos
+const existInFavorites = (id: number): boolean => {
+
+	// validar que no existe localStorage del lado del servidor "Importante"
+	if(typeof window === 'undefined') return false;
+
+	const favorites: number[] = JSON.parse(localStorage.getItem("favorites") || "[]");
+
+	// Regresamos el boolean en caso de que el id exista en favoritos
+	return favorites.includes(id);
+}
+
 // eslint-disable-next-line import/no-anonymous-default-export
 export default {
 	toggleFavorites,
+	existInFavorites,
 };
