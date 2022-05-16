@@ -1,13 +1,7 @@
-import {useEffect, useState} from "react";
 import {Container, Image, Text} from "@nextui-org/react";
-import {localStorageFavorites} from "../../utils";
+
 
 export const NoFavorites = () => {
-	const [favoritesPokemons, setFavoritesPokemons] = useState<number[]>([]);
-
-	useEffect(() => {
-		setFavoritesPokemons(localStorageFavorites.pokemons());
-	}, []);
 
 	return (
 		<Container
