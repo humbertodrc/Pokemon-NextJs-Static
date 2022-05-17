@@ -8,15 +8,14 @@ import confetti from "canvas-confetti";
 import { Pokemon, PokemonListResponse } from '../../interfaces';
 import { pokeApi } from '../../api';
 import { Layout } from '../../components/layouts';
-import { localStorageFavorites } from '../../utils';
-
+import { localStorageFavorites, getPokemonInfo  } from '../../utils';
 
 interface Props {
   pokemon: Pokemon
 }
 
 const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
-  
+
   const [isInFavorites, setIsInFavorites] = useState(
 		localStorageFavorites.existInFavorites(pokemon.id)
 	);
@@ -130,11 +129,9 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 export const getStaticProps: GetStaticProps = async ({params}) => {
   const { name } = params as { name: string }
 
-  const {data} = await pokeApi.get<Pokemon>(`/pokemon/${name}`)
-  
   return {
     props: {
-      pokemon:data
+      pokemon: await getPokemonInfo(name)
     }
   }
 }

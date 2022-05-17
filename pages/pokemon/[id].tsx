@@ -9,6 +9,7 @@ import {pokeApi} from "../../api";
 import {Layout} from "../../components/layouts";
 import {Pokemon} from "../../interfaces";
 import {localStorageFavorites} from "../../utils";
+import {getPokemonInfo} from "../../utils/getPokemonsInfo";
 
 interface Props {
 	pokemon: Pokemon;
@@ -134,11 +135,9 @@ export const getStaticProps: GetStaticProps = async ({params}) => {
 	// console.log("params", params);
 	const {id} = params as {id: string};
 
-	const {data} = await pokeApi.get<Pokemon>(`/pokemon/${id}`);
-
 	return {
 		props: {
-			pokemon: data,
+			pokemon: await getPokemonInfo(id),
 		},
 	};
 };
