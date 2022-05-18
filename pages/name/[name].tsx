@@ -20,8 +20,6 @@ const PokemonByNamePage: NextPage<Props> = ({ pokemon }) => {
 		localStorageFavorites.existInFavorites(pokemon.id)
 	);
 
-	// console.log("pokemon", pokemon);
-
 	const onToggleFavorite = () => {
 		localStorageFavorites.toggleFavorites(pokemon.id);
 		setIsInFavorites(!isInFavorites);
@@ -121,18 +119,31 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
     paths: pokemonsPatthsName151.map((name) => ({
       params: { name },
     })),
-    fallback: false
+    // fallback: false
+		fallback: 'blocking', // 'ISG' Incremental Static Generation
   }
 }
 
 // SSG: Server Side Generated
 export const getStaticProps: GetStaticProps = async ({params}) => {
-  const { name } = params as { name: string }
+	const { name } = params as { name: string }
+	
+	const pokemon = await getPokemonInfo(name)
+
+	if (!pokemon) {
+		return {
+			redirect: {
+				destination: '/',
+				permanent: false,
+			}
+		}
+	}
 
   return {
     props: {
-      pokemon: await getPokemonInfo(name)
-    }
+      pokemon
+		},
+		revalidate: 86400, // 1 day (ISR)
   }
 }
 

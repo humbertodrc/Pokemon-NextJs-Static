@@ -20,8 +20,6 @@ const PokemonPage: NextPage<Props> = ({pokemon}) => {
 		localStorageFavorites.existInFavorites(pokemon.id)
 	);
 
-	// console.log("pokemon", pokemon);
-
 	const onToggleFavorite = () => {
 		localStorageFavorites.toggleFavorites(pokemon.id);
 		setIsInFavorites(!isInFavorites);
@@ -61,7 +59,12 @@ const PokemonPage: NextPage<Props> = ({pokemon}) => {
 				<Grid xs={12} sm={8}>
 					<Card>
 						<Card.Header
-							css={{display: "flex", justifyContent: "space-between", flexWrap:"wrap", gap: "10px"}}
+							css={{
+								display: "flex",
+								justifyContent: "space-between",
+								flexWrap: "wrap",
+								gap: "10px",
+							}}
 						>
 							<Text h1 transform="capitalize">
 								{pokemon.name}
@@ -118,27 +121,38 @@ export const getStaticPaths: GetStaticPaths = async (ctx) => {
 		(value, index) => `${index + 1}`
 	);
 
-	// console.log("pokemonsPatths151", pokemonsPatths151);
-
 	// Los params tienes que coincidir con el id [id].tsx
 	return {
 		paths: pokemonsPatths151.map((id) => ({
 			params: {id},
 		})),
 		// fallback: false me permite que se muestre el 404 si no encuentra la pagina por ID
-		fallback: false,
+		// fallback: false,
+		fallback: "blocking", // 'ISG' Incremental Static Generation
 	};
 };
 
 // SSG: Server Side Generated
 export const getStaticProps: GetStaticProps = async ({params}) => {
-	// console.log("params", params);
 	const {id} = params as {id: string};
+
+	const pokemon = await getPokemonInfo(id);
+
+	// Cuando no existe el ID que va en la URL redireccionar a la pagina Home
+	if (!pokemon) {
+		return {
+			redirect: {
+				destination: "/",
+				permanent: false,
+			},
+		};
+	}
 
 	return {
 		props: {
-			pokemon: await getPokemonInfo(id),
+			pokemon,
 		},
+		revalidate: 86400, // 1 day (ISR)
 	};
 };
 
