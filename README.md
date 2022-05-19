@@ -1,34 +1,63 @@
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## Pokémon App Next JS
 
-## Getting Started
+Aplicación realizada con Next JS, React, Next UI, Axios, Canvas-Confetti
 
-First, run the development server:
 
-```bash
-npm run dev
-# or
-yarn dev
+## API Reference
+
+#### Get all items
+
+```http
+  GET https://pokeapi.co/api/v2/pokemon?limit=151
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+#### Get item
 
-You can start editing the page by modifying `pages/index.tsx`. The page auto-updates as you edit the file.
+```http
+  GET /pokemon/${nameOrID}
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.ts`.
+| Parameter | Type     | Description                       |
+| :-------- | :------- | :-------------------------------- |
+| `nameOrID`      | `string` | **Required**. Id of item to fetch |
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
 
-## Learn More
+## Color Reference
 
-To learn more about Next.js, take a look at the following resources:
+| Color             | Hex                                                                |
+| ----------------- | ------------------------------------------------------------------ |
+| Main |  #181A1B |
+| Menú |  #1D1F20 |
+| Buttoms | #1D1F20 |
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
 
-## Deploy on Vercel
+## Features
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+- Cards Pokémons
+- Guardar Favoritos
+- URL por nombre Pokemon
+- SEO
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Installation
+
+Correr el servidor:
+
+```bash
+    npm run dev
+    # or
+    yarn dev
+```
+    
+## Screenshots
+
+![pokemon-next-js-static vercel app_(Moto G4)](https://user-images.githubusercontent.com/63797901/169407549-118fdfa1-f616-4b33-9833-ed3400bf66bb.png)
+
+![pokemon-next-js-static vercel app_(Moto G4) (1)](https://user-images.githubusercontent.com/63797901/169407977-d723c28e-57e3-4f32-b03e-ba29dac10564.png)
+
+![pokemon-next-js-static vercel app_(Moto G4) (2)](https://user-images.githubusercontent.com/63797901/169408023-00a2749b-08f4-4e88-9dca-734a047fd28f.png)
+## Demo
+
+
+https://pokemon-next-js-static.vercel.app/
